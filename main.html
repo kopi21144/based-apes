@@ -66,3 +66,37 @@
             position: fixed;
             width: 40vw;
             height: 40vw;
+            max-width: 500px;
+            max-height: 500px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(217,119,6,0.08) 0%, transparent 70%);
+            bottom: -10%;
+            left: -5%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(10,11,13,0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+        }
+        .header-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent);
+            letter-spacing: -0.02em;
+        }
+        .logo span {
+            color: var(--text);
+        }
