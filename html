@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Based Apes — 7,777 unique generative apes on the EVM. K7 summit. Trait hashes. No proxy.">
+    <title>Based Apes | NFT Collection</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-deep: #0a0b0d;
+            --bg-card: #12141a;
+            --bg-elevated: #1a1d26;
+            --accent: #f59e0b;
+            --accent-dim: #d97706;
+            --text: #f3f4f6;
+            --text-muted: #9ca3af;
+            --border: #2d323c;
+            --success: #22c55e;
+            --radius: 12px;
+            --radius-lg: 20px;
+            --shadow: 0 8px 32px rgba(0,0,0,0.4);
+            --font-sans: 'Space Grotesk', system-ui, sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            font-family: var(--font-sans);
+            background: var(--bg-deep);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        .noise {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+            z-index: 9999;
+        }
+        .gradient-orb {
+            position: fixed;
+            width: 60vw;
+            height: 60vw;
+            max-width: 800px;
+            max-height: 800px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(245,158,11,0.12) 0%, transparent 60%);
+            top: -20%;
+            right: -10%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .gradient-orb-2 {
+            position: fixed;
+            width: 40vw;
+            height: 40vw;
+            max-width: 500px;
+            max-height: 500px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(217,119,6,0.08) 0%, transparent 70%);
+            bottom: -10%;
+            left: -5%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(10,11,13,0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+        }
+        .header-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent);
+            letter-spacing: -0.02em;
+        }
+        .logo span {
+            color: var(--text);
+        }
+        nav {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+        nav a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        nav a:hover {
+            color: var(--accent);
+        }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.65rem 1.25rem;
+            font-family: var(--font-sans);
+            font-weight: 600;
+            font-size: 0.95rem;
+            border-radius: var(--radius);
+            border: none;
+            cursor: pointer;
+            transition: transform 0.15s, box-shadow 0.15s;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent), var(--accent-dim));
+            color: #0a0b0d;
+        }
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 24px rgba(245,158,11,0.35);
+        }
+        .btn-ghost {
+            background: transparent;
+            color: var(--text-muted);
+            border: 1px solid var(--border);
+        }
+        .btn-ghost:hover {
+            color: var(--text);
+            border-color: var(--accent);
+        }
+        main {
+            position: relative;
+            z-index: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem 4rem;
+        }
+        .hero {
+            padding: 5rem 0 4rem;
+            text-align: center;
+        }
+        .hero h1 {
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            line-height: 1.1;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #fff 0%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .hero .sub {
+            font-size: 1.15rem;
+            color: var(--text-muted);
+            max-width: 520px;
+            margin: 0 auto 2rem;
+        }
+        .hero-ctas {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .badge {
+            display: inline-block;
+            padding: 0.35rem 0.75rem;
+            font-size: 0.8rem;
+            font-family: var(--font-mono);
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            color: var(--text-muted);
+            margin-top: 2rem;
+        }
+        .section {
+            padding: 4rem 0;
+        }
+        .section-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            letter-spacing: -0.02em;
+        }
+        .about-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.5rem;
+        }
+        .about-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 1.75rem;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .about-card:hover {
+            border-color: var(--accent);
+            box-shadow: var(--shadow);
+        }
+        .about-card h3 {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            color: var(--accent);
+        }
+        .about-card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+        .collection-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 1.5rem;
+        }
+        .nft-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+        .nft-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--accent);
+        }
+        .nft-card .thumb {
+            aspect-ratio: 1;
+            background: var(--bg-elevated);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-mono);
+            font-size: 3rem;
+            color: var(--accent);
+            opacity: 0.9;
+        }
+        .nft-card .info {
+            padding: 1rem;
+        }
+        .nft-card .name {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+        .nft-card .gen {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-family: var(--font-mono);
+        }
+        .roadmap-list {
+            list-style: none;
+        }
+        .roadmap-list li {
+            display: flex;
+            gap: 1.25rem;
+            padding: 1.25rem 0;
+            border-bottom: 1px solid var(--border);
+            align-items: flex-start;
+        }
+        .roadmap-list li:last-child {
+            border-bottom: none;
+        }
+        .roadmap-num {
+            flex-shrink: 0;
+            width: 2.5rem;
+            height: 2.5rem;
+            background: var(--accent);
+            color: #0a0b0d;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+        .roadmap-content h4 {
+            margin-bottom: 0.35rem;
+        }
+        .roadmap-content p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+        .faq-list {
+            max-width: 700px;
+        }
+        .faq-item {
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            margin-bottom: 0.75rem;
+            overflow: hidden;
+        }
+        .faq-q {
+            width: 100%;
+            padding: 1rem 1.25rem;
+            background: var(--bg-card);
+            border: none;
+            color: var(--text);
+            font-family: var(--font-sans);
+            font-size: 1rem;
+            font-weight: 600;
+            text-align: left;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .faq-q:hover {
+            background: var(--bg-elevated);
+        }
+        .faq-a {
+            padding: 1rem 1.25rem;
+            background: var(--bg-elevated);
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            border-top: 1px solid var(--border);
+        }
+        .stats-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            padding: 2rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            margin-bottom: 3rem;
+        }
+        .stat {
+            text-align: center;
+        }
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent);
+            font-family: var(--font-mono);
+        }
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+        footer {
+            position: relative;
+            z-index: 1;
+            border-top: 1px solid var(--border);
+            padding: 3rem 1.5rem 2rem;
+            margin-top: 4rem;
+            text-align: center;
+        }
+        .footer-links {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+        }
+        .footer-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+        .footer-links a:hover {
+            color: var(--accent);
+        }
+        .footer-note {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        .contract-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem 1.75rem;
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+            word-break: break-all;
+            color: var(--text-muted);
+            margin-top: 1rem;
+        }
+        .contract-box strong {
+            color: var(--accent);
+        }
+        .terms-block {
+            max-width: 700px;
+            padding: 2rem 0;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            line-height: 1.7;
+        }
+        .terms-block h3 {
+            color: var(--text);
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+        .terms-block p {
+            margin-bottom: 1rem;
+        }
+        .traits-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        .trait-pill {
+            padding: 0.4rem 0.8rem;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            font-size: 0.8rem;
+            font-family: var(--font-mono);
+            color: var(--text-muted);
+        }
+        .cta-banner {
+            text-align: center;
+            padding: 3rem 2rem;
+            background: linear-gradient(180deg, var(--bg-card) 0%, var(--bg-deep) 100%);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            margin: 3rem 0;
+        }
+        .cta-banner h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .cta-banner p {
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+        }
+        @media (max-width: 640px) {
+            nav {
+                gap: 1rem;
+            }
+            .hero {
+                padding: 3rem 0 2.5rem;
+            }
+            .section {
+                padding: 2.5rem 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="noise" aria-hidden="true"></div>
+    <div class="gradient-orb" aria-hidden="true"></div>
+    <div class="gradient-orb-2" aria-hidden="true"></div>
+
+    <header>
+        <div class="header-inner">
+            <a href="#" class="logo">Based <span>Apes</span></a>
+            <nav>
+                <a href="#about">About</a>
+                <a href="#collection">Collection</a>
+                <a href="#roadmap">Roadmap</a>
+                <a href="#faq">FAQ</a>
+                <a href="#contract">Contract</a>
+                <button class="btn btn-primary">Connect</button>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <h1>Based Apes</h1>
+            <p class="sub">7,777 unique generative apes on the EVM. One collection. No proxy. Trait hashes aligned to Merkle Phase 2.</p>
+            <div class="hero-ctas">
+                <button class="btn btn-primary">Mint (0.0077 ETH)</button>
+                <a href="#collection" class="btn btn-ghost">View Collection</a>
+            </div>
+            <span class="badge">BAPE · Max 7777 · Gen 1–13</span>
+        </section>
+
+        <div class="stats-bar">
+            <div class="stat">
+                <div class="stat-value">7777</div>
+                <div class="stat-label">Total supply</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value">13</div>
+                <div class="stat-label">Generations</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value">0.0077</div>
+                <div class="stat-label">Mint (ETH)</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value">EVM</div>
+                <div class="stat-label">Networks</div>
+            </div>
+        </div>
+
+        <section class="section" id="about">
+            <h2 class="section-title">About</h2>
+            <div class="about-grid">
+                <div class="about-card">
+                    <h3>On-chain traits</h3>
+                    <p>Each ape has a generation derived at mint from block context. Stored on-chain; no external metadata dependency for rarity.</p>
+                </div>
+                <div class="about-card">
+                    <h3>Fixed supply</h3>
+                    <p>Cap of 7,777. No additional minting after deployment. Single contract, no upgrade proxy.</p>
+                </div>
+                <div class="about-card">
+                    <h3>ERC-721</h3>
+                    <p>Full compatibility with marketplaces and wallets. Safe transfer and approval flow; receiver checks where applicable.</p>
+                </div>
+                <div class="about-card">
+                    <h3>Mainnet ready</h3>
+                    <p>Checks-effects-interactions, no delegatecall to untrusted code, guarded withdrawals. Deploy with confidence.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="collection">
+            <h2 class="section-title">Collection preview</h2>
+            <div class="collection-grid">
+                <div class="nft-card">
+                    <div class="thumb">🦍</div>
+                    <div class="info">
+                        <div class="name">Based Ape #1</div>
+                        <div class="gen">Gen 7</div>
+                    </div>
+                </div>
+                <div class="nft-card">
+                    <div class="thumb">🐵</div>
+                    <div class="info">
+                        <div class="name">Based Ape #2</div>
+                        <div class="gen">Gen 2</div>
+                    </div>
+                </div>
+                <div class="nft-card">
+                    <div class="thumb">🦧</div>
+                    <div class="info">
+                        <div class="name">Based Ape #3</div>
+                        <div class="gen">Gen 11</div>
+                    </div>
+                </div>
+                <div class="nft-card">
+                    <div class="thumb">🐒</div>
+                    <div class="info">
+                        <div class="name">Based Ape #4</div>
+                        <div class="gen">Gen 5</div>
+                    </div>
+                </div>
+                <div class="nft-card">
+                    <div class="thumb">🦍</div>
+                    <div class="info">
+                        <div class="name">Based Ape #5</div>
+                        <div class="gen">Gen 13</div>
+                    </div>
+                </div>
+                <div class="nft-card">
+                    <div class="thumb">🐵</div>
+                    <div class="info">
+                        <div class="name">Based Ape #6</div>
+                        <div class="gen">Gen 1</div>
+                    </div>
+                </div>
+                <div class="nft-card">
+                    <div class="thumb">🦍</div>
+                    <div class="info">
+                        <div class="name">Based Ape #7</div>
+                        <div class="gen">Gen 8</div>
+                    </div>
+                </div>
+                <div class="nft-card">
+                    <div class="thumb">🐒</div>
+                    <div class="info">
+                        <div class="name">Based Ape #8</div>
+                        <div class="gen">Gen 4</div>
+                    </div>
+                </div>
+            </div>
+            <div class="traits-row">
+                <span class="trait-pill">Gen 1–13</span>
+                <span class="trait-pill">ERC-721</span>
+                <span class="trait-pill">On-chain</span>
+                <span class="trait-pill">7777 cap</span>
+            </div>
+        </section>
+
+        <section class="section" id="contract">
+            <h2 class="section-title">Contract</h2>
+            <p class="sub" style="margin-bottom: 0.5rem;">Single deployment. Verify on your block explorer before minting.</p>
+            <div class="contract-box">
+                <strong>BasedApes (BAPE)</strong><br>
+                Max supply: 7777 · Mint: 0.0077 ETH<br>
+                Symbol: BAPE · Genesis block stored on deployment.
+            </div>
+        </section>
+
+        <div class="cta-banner">
+            <h3>Ready to mint?</h3>
+            <p>Connect your wallet and mint your Based Ape. 0.0077 ETH per mint.</p>
+            <button class="btn btn-primary">Connect wallet</button>
+        </div>
+
+        <section class="section" id="roadmap">
+            <h2 class="section-title">Roadmap</h2>
+            <ul class="roadmap-list">
+                <li>
+                    <span class="roadmap-num">1</span>
+                    <div class="roadmap-content">
+                        <h4>Launch</h4>
+                        <p>Contract deployment on EVM mainnet. Mint open at 0.0077 ETH. Base URI configurable by deployer.</p>
+                    </div>
+                </li>
+                <li>
+                    <span class="roadmap-num">2</span>
+                    <div class="roadmap-content">
+                        <h4>Reveal</h4>
+                        <p>Metadata and art revealed. Generation and trait consistency verified on-chain.</p>
+                    </div>
+                </li>
+                <li>
+                    <span class="roadmap-num">3</span>
+                    <div class="roadmap-content">
+                        <h4>Phase 2</h4>
+                        <p>Merkle Phase 2 alignment. Utility and partnerships as defined by the community.</p>
+                    </div>
+                </li>
+            </ul>
+        </section>
+
+        <section class="section" id="faq">
+            <h2 class="section-title">FAQ</h2>
+            <div class="faq-list">
+                <div class="faq-item">
+                    <button type="button" class="faq-q" aria-expanded="false">What is Based Apes?<span>+</span></button>
+                    <div class="faq-a">Based Apes is an NFT collection of 7,777 unique generative apes. Each token has an on-chain generation (1–13) and is fully ERC-721 compatible. No proxy; single deployment.</div>
+                </div>
+                <div class="faq-item">
+                    <button type="button" class="faq-q" aria-expanded="false">How do I mint?<span>+</span></button>
+                    <div class="faq-a">Connect your wallet and call the mint function with 0.0077 ETH (or more) per mint. Supply is capped at 7,777. Each mint assigns a random generation from block data.</div>
+                </div>
+                <div class="faq-item">
+                    <button type="button" class="faq-q" aria-expanded="false">What is generation?<span>+</span></button>
+                    <div class="faq-a">Generation is a number from 1 to 13 derived at mint time from block prevrandao, timestamp, and token parameters. It is stored on-chain and used for traits and rarity.</div>
+                </div>
+                <div class="faq-item">
+                    <button type="button" class="faq-q" aria-expanded="false">Which networks?<span>+</span></button>
+                    <div class="faq-a">The contract is EVM-compatible and can be deployed on Ethereum, Base, Arbitrum, Optimism, or any EVM mainnet. Deploy once per chain if desired.</div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-links">
+            <a href="#">Twitter</a>
+            <a href="#">Discord</a>
+            <a href="#">OpenSea</a>
+            <a href="#">Etherscan</a>
+        </div>
+        <p class="footer-note">Based Apes (BAPE). This site is for informational purposes. Always verify contract address on-chain before minting.</p>
+        <div class="terms-block" style="margin-top: 2rem; padding-top: 2rem; border-top: 1px solid var(--border);">
+            <h3>Disclaimer</h3>
+            <p>This webpage describes the Based Apes NFT collection and is not a binding contract. Minting and ownership are subject to the smart contract deployed on-chain and the terms of the platform you use. Do not send funds to any address without verifying the contract. We are not responsible for lost funds or misuse of third-party tools.</p>
+            <h3>Attribution</h3>
+            <p>Fonts: Space Grotesk and JetBrains Mono via Google Fonts. No claim of endorsement. All product and network names are trademarks of their respective owners.</p>
+        </div>
+    </footer>
+
+    <script>
+        (function () {
+            var faqButtons = document.querySelectorAll('.faq-q');
+            faqButtons.forEach(function (btn) {
+                btn.addEventListener('click', function () {
+                    var expanded = this.getAttribute('aria-expanded') === 'true';
+                    var all = document.querySelectorAll('.faq-q');
+                    all.forEach(function (b) {
+                        b.setAttribute('aria-expanded', 'false');
+                        b.querySelector('span').textContent = '+';
+                    });
+                    var answers = document.querySelectorAll('.faq-a');
+                    answers.forEach(function (a) {
+                        a.style.display = 'none';
+                    });
+                    if (!expanded) {
+                        this.setAttribute('aria-expanded', 'true');
+                        this.querySelector('span').textContent = '−';
+                        this.nextElementSibling.style.display = 'block';
+                    }
+                });
+            });
+            document.querySelectorAll('.faq-a').forEach(function (el) {
+                el.style.display = 'none';
+            });
+        })();
+    </script>
+</body>
+</html>
