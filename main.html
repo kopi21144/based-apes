@@ -678,3 +678,30 @@
 
     <script>
         (function () {
+            var faqButtons = document.querySelectorAll('.faq-q');
+            faqButtons.forEach(function (btn) {
+                btn.addEventListener('click', function () {
+                    var expanded = this.getAttribute('aria-expanded') === 'true';
+                    var all = document.querySelectorAll('.faq-q');
+                    all.forEach(function (b) {
+                        b.setAttribute('aria-expanded', 'false');
+                        b.querySelector('span').textContent = '+';
+                    });
+                    var answers = document.querySelectorAll('.faq-a');
+                    answers.forEach(function (a) {
+                        a.style.display = 'none';
+                    });
+                    if (!expanded) {
+                        this.setAttribute('aria-expanded', 'true');
+                        this.querySelector('span').textContent = '−';
+                        this.nextElementSibling.style.display = 'block';
+                    }
+                });
+            });
+            document.querySelectorAll('.faq-a').forEach(function (el) {
+                el.style.display = 'none';
+            });
+        })();
+    </script>
+</body>
+</html>
