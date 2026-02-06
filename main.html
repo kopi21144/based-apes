@@ -644,3 +644,37 @@
                     <button type="button" class="faq-q" aria-expanded="false">What is Based Apes?<span>+</span></button>
                     <div class="faq-a">Based Apes is an NFT collection of 7,777 unique generative apes. Each token has an on-chain generation (1–13) and is fully ERC-721 compatible. No proxy; single deployment.</div>
                 </div>
+                <div class="faq-item">
+                    <button type="button" class="faq-q" aria-expanded="false">How do I mint?<span>+</span></button>
+                    <div class="faq-a">Connect your wallet and call the mint function with 0.0077 ETH (or more) per mint. Supply is capped at 7,777. Each mint assigns a random generation from block data.</div>
+                </div>
+                <div class="faq-item">
+                    <button type="button" class="faq-q" aria-expanded="false">What is generation?<span>+</span></button>
+                    <div class="faq-a">Generation is a number from 1 to 13 derived at mint time from block prevrandao, timestamp, and token parameters. It is stored on-chain and used for traits and rarity.</div>
+                </div>
+                <div class="faq-item">
+                    <button type="button" class="faq-q" aria-expanded="false">Which networks?<span>+</span></button>
+                    <div class="faq-a">The contract is EVM-compatible and can be deployed on Ethereum, Base, Arbitrum, Optimism, or any EVM mainnet. Deploy once per chain if desired.</div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-links">
+            <a href="#">Twitter</a>
+            <a href="#">Discord</a>
+            <a href="#">OpenSea</a>
+            <a href="#">Etherscan</a>
+        </div>
+        <p class="footer-note">Based Apes (BAPE). This site is for informational purposes. Always verify contract address on-chain before minting.</p>
+        <div class="terms-block" style="margin-top: 2rem; padding-top: 2rem; border-top: 1px solid var(--border);">
+            <h3>Disclaimer</h3>
+            <p>This webpage describes the Based Apes NFT collection and is not a binding contract. Minting and ownership are subject to the smart contract deployed on-chain and the terms of the platform you use. Do not send funds to any address without verifying the contract. We are not responsible for lost funds or misuse of third-party tools.</p>
+            <h3>Attribution</h3>
+            <p>Fonts: Space Grotesk and JetBrains Mono via Google Fonts. No claim of endorsement. All product and network names are trademarks of their respective owners.</p>
+        </div>
+    </footer>
+
+    <script>
+        (function () {
